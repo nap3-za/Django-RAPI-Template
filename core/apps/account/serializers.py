@@ -107,7 +107,7 @@ class CustomPasswordResetSerializer(PasswordResetSerializer):
 	def get_email_options(self):
 		return {
 			# "html_email_template_name": "account/password_reset_confirm.html",
-			"email_template_name": "account/password_reset_confirm.html",
+			"email_template_name": "account/password_reset_email.html",
 			
 			"extra_email_context": {
 				"frontend_app_domain": settings.FRONTEND_APP["DOMAIN"],
