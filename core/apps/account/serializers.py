@@ -53,6 +53,7 @@ class AccountSerializer(serializers.ModelSerializer):
 			"name",
 			"surname",
 			"gender",
+			"profile_image",
 
 			"email",
 			"phone_number",
