@@ -1,5 +1,3 @@
-import datetime
-
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db.models import Q
@@ -112,6 +110,10 @@ class Account(AbstractBaseUser, PermissionsMixin):
 	
 	def update(self, **kwargs):
 		Account.objects.filter(id=self.id).update(**kwargs)
+		if "profile_image" in kwargs.keys():
+			self.profile_image = kwargs["profile_image"]
+			self.save()
+
 		return Account.objects.get(id=self.id)
 
 	def get_profile_image_filename(self):
