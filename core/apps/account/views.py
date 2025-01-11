@@ -76,25 +76,26 @@ class AccountViewSet(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.Retr
 	queryset = Account.objects.all_active().order_by('-username')
 	serializer_class = AccountSerializer
 	pagination_class = AccountViewSetPagination
-
+	# parser_classes = (MultiPartParser, FormParser)
 
 	def retrieve(self, request, *args, **kwargs):
 		instance = self.get_object()
+		serializer_data = self.get_serializer(instance).data
 
-		# Used by react to send some get requests of more info 
-		# if the authenticated user is viewing his own account
-		is_auth_user = False
-		if instance == request.user:
-			is_auth_user = True 
-
-		account_serializer = self.get_serializer(instance)
-
-		# Add some extra info for the details page
 		response_data = {
-			"account":account_serializer.data,
-			"isAuthUser": is_auth_user,
+			"account": {
+				**serializer_data
+			},
+			"isAuthUser": instance == self.request.user,
 		}
+
 		return Response(response_data)
+
+	def perform_update(self, serializer):
+		instance = self.get_object()
+		if instance != self.request.user:
+			return Response({"error":"You cannot update an account that doesn't belong to you"}, status=status.HTTP_403_FORBIDDEN)
+		return serializer.save()
 
 
 class AccountDeletionView(APIView):
