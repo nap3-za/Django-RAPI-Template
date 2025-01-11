@@ -44,11 +44,10 @@ class SignUpSerializer(serializers.ModelSerializer):
 
 class AccountSerializer(serializers.ModelSerializer):
 
-	phone_number 					= PhoneNumberField()
-
 	class Meta:
 		model = Account
 		fields = (
+			"id",
 			"username",
 			"name",
 			"surname",
@@ -59,7 +58,7 @@ class AccountSerializer(serializers.ModelSerializer):
 			"phone_number",
 		)
 		read_only_fields = (
-			"gender",
+			"id",
 		)
 
 	def update(self, instance, validated_data):
