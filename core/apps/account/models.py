@@ -57,6 +57,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
 				email=email,
 				phone_number=phone_number,
 				accept=accept,
+				password=password,
 			)
 			user.is_superuser = True
 			user.save(using=self._db)
